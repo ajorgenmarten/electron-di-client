@@ -1,0 +1,44 @@
+{
+  "name": "electron-di-react",
+  "version": "1.0.0",
+  "description": "Flujo de comunicación entre React y Electron",
+  "tsup": {
+    "entry": [
+      "src/index.ts"
+    ],
+    "format": [
+      "esm",
+      "cjs"
+    ],
+    "dts": true,
+    "splitting": false,
+    "sourcemap": true,
+    "clean": true
+  },
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "main": "dist/index.js",
+  "scripts": {
+    "publish": "npm run build && npm publish --access public",
+    "build": "tsup"
+  },
+  "keywords": [
+    "electron",
+    "react",
+    "ipc"
+  ],
+  "author": "Alejandro Jorgen Marten",
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/react": "^19.0.10",
+    "react": "^19.0.0",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.2"
+  },
+  "peerDependencies": {
+    "electron": ">=30.0.2 <34.3.0",
+    "react": ">=18.0.0 <20.0.0",
+    "electron-di": "^2.4.0"
+  }
+}
