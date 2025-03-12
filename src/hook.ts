@@ -1,8 +1,7 @@
-import { IpcRenderer } from "electron";
 import { useState } from "react";
-import { IPCRequest, IPCResponse } from "./types";
+import { IPCRequest, IPCResponse, IPCRenderer } from "./types";
 
-export function useIPCContextHook(ipcrenderer: IpcRenderer) {
+export function useIPCContextHook(ipcrenderer: IPCRenderer) {
     const [ipc, setIpc] = useState(ipcrenderer);
 
     if (typeof ipcrenderer === 'undefined') {

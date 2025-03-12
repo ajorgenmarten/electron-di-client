@@ -1,5 +1,6 @@
 import { IPCContext } from './context'
 import { useIPCContextHook } from './hook'
+import { IPCRenderer } from './types'
 
 export function IPCProvider(props: IPCProviderProps) {
     const ipcHook = useIPCContextHook(props.ipcRenderer)
@@ -8,5 +9,5 @@ export function IPCProvider(props: IPCProviderProps) {
 
 interface IPCProviderProps {
     children?: React.ReactNode
-    ipcRenderer: Electron.IpcRenderer
+    ipcRenderer: IPCRenderer
 }

@@ -1,9 +1,15 @@
 import { createContext, useContext } from 'react'
 import { useIPCContextHook } from './hook'
-import { IPCRequest, IPCResponse } from './types'
+import { IPCRenderer, IpcRendererListener, IPCRequest, IPCResponse } from './types'
+
+const defaultIpc = {
+    invoke: async (_channel:string, ...args: any[]) => { },
+    send: (_channel:string, ...args: any[]) => { },
+    on: (_channel:string, _listener: IpcRendererListener) => { }
+} as IPCRenderer
 
 export const IPCContext = createContext<ReturnType<typeof useIPCContextHook>>({
-    ipc: Electron.ipcRenderer,
+    ipc: defaultIpc,
     request: async (_channel:string, _request?: IPCRequest) => { return { headers: {} } as IPCResponse<any> }
 })
 
