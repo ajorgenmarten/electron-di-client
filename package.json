@@ -1,6 +1,6 @@
 {
   "name": "electron-di-react",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Flujo de comunicación entre React y Electron",
   "tsup": {
     "entry": [
@@ -15,7 +15,7 @@
     "sourcemap": true,
     "clean": true
   },
-  "module": "dist/index.mjs",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "scripts": {
