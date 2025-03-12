@@ -1,6 +1,6 @@
 {
   "name": "electron-di-react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Flujo de comunicación entre React y Electron",
   "tsup": {
     "entry": [
@@ -19,7 +19,8 @@
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "scripts": {
-    "publish": "npm run build && npm publish --access public",
+    "release": "npm run build && npm publish --access public",
+    "deploy": "npm run release && git add . && git commit -m \"🏷️ Up version of the package\" && git push",
     "build": "tsup"
   },
   "keywords": [
@@ -29,7 +30,11 @@
   ],
   "author": "Alejandro Jorgen Marten",
   "license": "MIT",
-  "type": "commonjs",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ajorgenmarten/electron-di-react.git"
+  },
   "devDependencies": {
     "@types/react": "^19.0.10",
     "react": "^19.0.0",
