@@ -1,6 +1,6 @@
 {
   "name": "electron-di-react",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Flujo de comunicación entre React y Electron",
   "tsup": {
     "entry": [
