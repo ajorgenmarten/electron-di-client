@@ -42,7 +42,7 @@
     "typescript": "^5.8.2"
   },
   "peerDependencies": {
-    "electron": ">=30.0.2 <34.3.0",
+    "electron": ">=22.0.0",
     "react": ">=18.0.0 <20.0.0",
     "electron-di": "^2.4.0"
   }
