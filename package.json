@@ -1,6 +1,6 @@
 {
   "name": "electron-di-client",
-  "version": "3.2.2",
+  "version": "3.2.3",
   "description": "Flujo de comunicación entre React y Electron",
   "tsup": {
     "entry": [
@@ -24,7 +24,7 @@
   },
   "keywords": [
     "electron",
-    "react",
+    "client",
     "ipc"
   ],
   "author": "Alejandro Jorgen Marten",

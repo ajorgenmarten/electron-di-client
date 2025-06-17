@@ -8,96 +8,53 @@ interface IpcClientApi {
     invoke(channel: string, ...args: any[]): Promise<any>;
 }
 
-
-type UseIn = "request" | "response"
-
 type Context = {
     Type: "invoke" | "send"
-    Payload?: object
     Channel: string
 }
 
-type RequestInterceptor = {
-    Pipe: (context: Context) => Context | Promise<Context>
-    OnReject?: (error: any) => Context 
+type Interceptor<T extends "request" | "response"> = {
+    Pipe?: T extends "request" 
+        ? (context: Context, payload?: any) => any | Promise<any>
+        : (context: Context, response?: any) => any | Promise<any>
+    OnReject?: (err: any, context: Context) => any | Promise<any>
 }
-
-type ResponseInterceptor = {
-    OnComplete: (value: any) => any | Promise<any>
-    OnReject?: (error: any) => any
-}
-
 
 export class IpcClient {
-    private requestInterceptors: RequestInterceptor[] = []
-    private responseInterceptors: ResponseInterceptor[] = []
+    private requestInterceptors: Interceptor<"request">[] = []
+    private responseInterceptors: Interceptor<"response">[] = []
 
     constructor(private ipc: IpcClientApi) {}
 
-    use(type: UseIn, interceptor: RequestInterceptor | ResponseInterceptor) {
-        if (type === 'request') this.requestInterceptors.push(interceptor as RequestInterceptor)
-        else this.responseInterceptors.push(interceptor as ResponseInterceptor)
+    use<T extends "request" | "response">(type: T, interceptor: Interceptor<T>) { 
+        if (type === 'request') this.requestInterceptors.push(interceptor as Interceptor<"request">)
+        else this.responseInterceptors.push(interceptor as Interceptor<"response">)
     }
 
-    private async runRequest(context: Context) {
-        let value = context
-        for(const interceptor of this.requestInterceptors) {
+    private async run(type: 'request' | 'response', context: Context, value: any) {
+        const interceptors = type === 'request' ? this.requestInterceptors : this.responseInterceptors
+
+        let result = value
+        for(const interceptor of interceptors) {
             try {
-                value = await interceptor.Pipe(value)
+                if(interceptor.Pipe) result = await interceptor.Pipe({...context}, result)
             } catch (error) {
-                if (interceptor.OnReject) value = interceptor.OnReject(error)
+                if(interceptor.OnReject) result = await interceptor.OnReject(error, {...context})
                 else throw error
             }
         }
-        return value
+        return result
     }
 
-    private async runResponse(value: any) {
-        let response = value
-        for(const interceptor of this.responseInterceptors) {
-            try {
-                value = await interceptor.OnComplete(response)
-            } catch (error) {
-                if (interceptor.OnReject) value = interceptor.OnReject(error)
-                else throw error
-            }
-        }
-        return response
+    async invoke<T = any>(channel: string, data?: T) {
+        const context: Context = { Channel: channel, Type: 'invoke' }
+        const modifiedData = await this.run('request', context, data)
+        return this.run('response', context, await this.ipc.invoke(channel, modifiedData))
     }
 
-    async invoke(channel: string, data?: object) {
-        const context: Context = {
-            Channel: channel,
-            Type: 'invoke',
-            Payload: data
-        }
-
-        try {
-            const modifiedContext = await this.runRequest(context)
-
-            const response = await this.ipc.invoke(modifiedContext.Channel, modifiedContext.Payload)
-
-            return await this.runResponse(response)
-        } catch (error) {
-            console.error(error)
-            throw error
-        }
-    }
-
-    async send(channel: string, data?: object) {
-        const context: Context = {
-            Channel: channel,
-            Type: 'send',
-            Payload: data
-        }
-
-        try {
-            const modifiedContext = await this.runRequest(context)
-
-            this.ipc.send(modifiedContext.Channel, modifiedContext.Payload)
-        } catch (error) {
-            console.error(error)
-            throw error
-        }
+    async send<T = any>(channel: string, data?: T) {
+        const context: Context = { Channel: channel, Type: 'send'}
+        const modifiedData = await this.run('response', context, data)
+        this.ipc.send(channel, modifiedData)
     }
 }
