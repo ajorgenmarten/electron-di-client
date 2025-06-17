@@ -1,6 +1,6 @@
 {
-  "name": "electron-di-react",
-  "version": "1.0.4",
+  "name": "electron-di-client",
+  "version": "3.2.0",
   "description": "Flujo de comunicación entre React y Electron",
   "tsup": {
     "entry": [
@@ -19,8 +19,7 @@
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "scripts": {
-    "release": "npm run build && npm publish --access public",
-    "deploy": "npm run release && git add . && git commit -m \"🏷️ Up version of the package\" && git push",
+    "prepare": "npm run build",
     "build": "tsup"
   },
   "keywords": [
@@ -43,7 +42,7 @@
   },
   "peerDependencies": {
     "electron": ">=22.0.0",
-    "react": ">=18.0.0 <20.0.0",
-    "electron-di": "^2.4.0"
+    "react": ">=18.0.0",
+    "electron-di": "^3.2.0"
   }
 }
