@@ -1,6 +1,13 @@
-import { IpcRenderer } from "electron";
+import { IpcRendererEvent } from "electron";
 
-type IpcClientApi = Pick<IpcRenderer, 'invoke' | 'send' | 'on'>
+type IpcRendererListener = (event: IpcRendererEvent, ...args: any[]) => void;
+
+interface IpcClientApi {
+    on(channel: string, listener: IpcRendererListener): () => void;
+    send(channel: string, ...args: any[]): void;
+    invoke(channel: string, ...args: any[]): Promise<any>;
+}
+
 
 type UseIn = "request" | "response"
 
