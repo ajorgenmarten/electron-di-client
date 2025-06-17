@@ -3,7 +3,7 @@ import { IpcRendererEvent } from "electron";
 type IpcRendererListener = (event: IpcRendererEvent, ...args: any[]) => void;
 
 interface IpcClientApi {
-    on(channel: string, listener: IpcRendererListener): () => void;
+    on(channel: string, listener: IpcRendererListener): () => any;
     send(channel: string, ...args: any[]): void;
     invoke(channel: string, ...args: any[]): Promise<any>;
 }
