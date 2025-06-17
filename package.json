@@ -1,6 +1,6 @@
 {
   "name": "electron-di-client",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "Flujo de comunicación entre React y Electron",
   "tsup": {
     "entry": [

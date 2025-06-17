@@ -1,6 +1,6 @@
 import { IpcRenderer } from "electron";
 
-type IpcClientApi = Pick<IpcRenderer, 'invoke' | 'send' | 'on' | 'off'>
+type IpcClientApi = Pick<IpcRenderer, 'invoke' | 'send' | 'on'>
 
 type UseIn = "request" | "response"
 
